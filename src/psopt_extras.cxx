@@ -30,12 +30,12 @@ e-mail:    v.m.becerra@ieee.org
 
 // Implementation of PSOPT_extras class function
 
-
+#include <filesystem>
 #include "psopt.h"
 
-DEC_THREAD int     PSOPT_extras::errorFlag   = 0;	   
+DEC_THREAD int     PSOPT_extras::errorFlag   = 0;
 
-DEC_THREAD int     PSOPT_extras::print_level = 1;        
+DEC_THREAD int     PSOPT_extras::print_level = 1;
 
 DEC_THREAD clock_t PSOPT_extras::start_clock = 0;
 
@@ -56,10 +56,11 @@ int PSOPT_extras::PrintLevel() {
 #define OUTPUT_STREAM stderr
 #endif
 
-void error_message(const char *error_text)
+void error_message(const char *error_text, const char *outdir)
 {
 // Error handling routine
 
+  std::filesystem::path outdir_path(outdir);
   string m1;
   string m2;
 
@@ -74,7 +75,7 @@ void error_message(const char *error_text)
 
   fprintf(OUTPUT_STREAM,"%s", m1.c_str());
   fprintf(OUTPUT_STREAM,"%s", m2.c_str());
-  FILE* err_file = fopen("error_message.txt","w");
+  FILE* err_file = fopen(( outdir_path / "error_message.txt").c_str(),"w");
   fprintf(err_file,"%s", m1.c_str() );
   fprintf(err_file,"%s", m2.c_str() );
   fclose(err_file);

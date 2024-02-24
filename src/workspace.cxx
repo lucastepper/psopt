@@ -270,11 +270,11 @@ void initialize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Wor
 
   workspace->mesh_statistics_tex = fopen( ( problem.outdir / fname).c_str(),"w");
 
-  if (workspace->psopt_solution_summary_file == NULL) error_message("Error opening \"psopt_solution_summary.txt\" file");
+  if (workspace->psopt_solution_summary_file == NULL) error_message("Error opening \"psopt_solution_summary.txt\" file", problem.outdir.c_str());
 
-  if (workspace->mesh_statistics == NULL) error_message("Error opening \"mesh_statistics.txt\" file");
+  if (workspace->mesh_statistics == NULL) error_message("Error opening \"mesh_statistics.txt\" file", problem.outdir.c_str());
 
-  if (workspace->mesh_statistics_tex == NULL) error_message("Error opening \"mesh_statistics.tex\" file");
+  if (workspace->mesh_statistics_tex == NULL) error_message("Error opening \"mesh_statistics.tex\" file", problem.outdir.c_str());
 
   for(i=0;i<problem.nphases;i++) {
      workspace->emax_history[i].resize(50,2);

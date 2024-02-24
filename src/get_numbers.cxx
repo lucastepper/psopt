@@ -35,14 +35,14 @@ int get_number_of_mesh_refinement_iterations(Prob& problem, Alg& algorithm)
 {
   int number_of_mesh_refinement_iterations;
 
-  if (algorithm.mesh_refinement == "manual") {	  	
+  if (algorithm.mesh_refinement == "manual") {
         int n1 = problem.phases(1).nodes.cols();
         for (int iphase=2;iphase<=problem.nphases;iphase++) {
              if (problem.phases(iphase).nodes.cols() != n1) {
-                error_message("Number of manual mesh refinement iterations must be the same in all phases");             
-             }       
+                error_message("Number of manual mesh refinement iterations must be the same in all phases", "\tmp");
+             }
         }
-  	
+
         number_of_mesh_refinement_iterations = n1;
   }
   else
@@ -164,8 +164,8 @@ int get_max_nodes(Prob& problem,int iphase, Alg* algorithm)
 //                int increment = algorithm->mr_max_increment_factor*count;
 // 		          count += increment;
 // The above two lines have been deleted has they led to inconsistent mesh refinement iterations with different maximum number of mesh refinement iterations.
-// Thanks to Emmanuel Schneider for pointing out this issue.             
-            count += (int) algorithm->mr_max_increment_factor * count; 
+// Thanks to Emmanuel Schneider for pointing out this issue.
+            count += (int) algorithm->mr_max_increment_factor * count;
 	      }
 	      retval += count;
     }

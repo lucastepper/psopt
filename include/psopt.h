@@ -969,7 +969,7 @@ void surf(const MatrixXd& x, const MatrixXd& y, const MatrixXd& z, const string&
 
 void plot3(const MatrixXd& x, const MatrixXd& y, const MatrixXd& z, const string& title, const char* xlabel, const char* ylabel, const char* zlabel, const char* terminal=NULL, const char* output=NULL, const char* view=NULL);
 
-void psopt_error_message(const char *error_text);
+void psopt_error_message(const char *error_text, const char *outdir);
 
 adouble dot(adouble* x, adouble* y, int n);
 
@@ -1169,7 +1169,7 @@ public:
    static void   RiseErrorFlag()   { errorFlag = true; }
 
 
-   friend void error_message(const char *input_text);
+   friend void error_message(const char *input_text, const char *outdir);
   //! This function, which is to be used in conjunction with function toc(), starts counting elapsed CPU time.
    friend void tic(void);
   //! This function, which is to be used in conjunction with function tic(), stops counting CPU time, and it prints and returns the elapsed time in seconds since the function tic() was called.
@@ -1182,7 +1182,7 @@ public:
 
 };
 
-void error_message(const char *input_text);
+void error_message(const char *input_text, const char *outdir);
 void tic(void);
 double toc();
 
@@ -1534,7 +1534,7 @@ public:
       \return Reference to a temporary TripletSparseMatrix object with the result of the operation
    */
 
-   friend void sp_error_message(const char *error_text);
+   friend void sp_error_message(const char *error_text, const char *outdir);
 
 
 };
@@ -1542,7 +1542,7 @@ public:
 // Declaration of all friend functions of TripletSparseMatrix class
 
 
-void sp_error_message(const char *error_text);
+void sp_error_message(const char *error_text, const char *outdir);
 TripletSparseMatrix elemProduct(const TripletSparseMatrix A, const TripletSparseMatrix& B);
 TripletSparseMatrix tra(const TripletSparseMatrix& A);
 TripletSparseMatrix speye(int n);

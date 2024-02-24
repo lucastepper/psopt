@@ -53,7 +53,7 @@ void auto_link(adouble* linkages, int* index, adouble* xad, int iphase_a, int ip
 
     if (nstates_a != nstates_b)
     {
-        error_message("\nauto_link(): it is not possible to auto link phases with different number of states");
+        error_message("\nauto_link(): it is not possible to auto link phases with different number of states", problem->outdir.c_str());
     }
 
     // state continuity
@@ -101,12 +101,12 @@ void auto_link_2(adouble* linkages, int* index, adouble* xad, int iphase_a, int 
 
     if (nstates_a != nstates_b)
     {
-        error_message("\nauto_link(): it is not possible to auto link phases with different number of states");
+        error_message("\nauto_link(): it is not possible to auto link phases with different number of states", problem->outdir.c_str());
     }
 
     if (ncontrols_a != ncontrols_b)
     {
-        error_message("\nauto_link_2(): It is not possible to auto link phases with different number of controls");
+        error_message("\nauto_link_2(): It is not possible to auto link phases with different number of controls", problem->outdir.c_str());
     }
 
 
@@ -145,7 +145,7 @@ void auto_link_2(adouble* linkages, int* index, adouble* xad, int iphase_a, int 
 Phases& Prob::phases(int iphase)
 {
      if (iphase <1 || iphase > nphases)
-          error_message("Phase index must be between 1 and problem.nphases in Prob::phases()");
+          error_message("Phase index must be between 1 and problem.nphases in Prob::phases()", "\tmp");
      return phase[iphase-1];
 }
 
@@ -163,7 +163,7 @@ void multi_segment_setup(Prob& problem, Alg& algorithm, MSdata& msdata)
 
      if (msdata.nodes.rows() != 1 && msdata.nodes.rows() != problem.nphases) {
 	      error_message("Incorrect dimensions of msdata.nodes matrix, its row dimension should\n  \
-	                        be either 1 or equal to the number of segments");
+	                        be either 1 or equal to the number of segments", problem.outdir.c_str());
      }
 
      psopt_level1_setup(problem);
@@ -181,13 +181,13 @@ void multi_segment_setup(Prob& problem, Alg& algorithm, MSdata& msdata)
 
      problem.phases(1).npath = msdata.npath;
 
-     problem.phases(1).nodes = msdata.nodes.row(0); 
-  
+     problem.phases(1).nodes = msdata.nodes.row(0);
+
      problem.phases(1).nparameters = msdata.nparameters;
 
      for (int i=1; i<= problem.nphases;i++) {
         // No parameter estimation problems can be defined as multi-segment problems
-        
+
         problem.phases(i).nobserved = 0;
 
         problem.phases(i).nsamples  = 0;
@@ -344,7 +344,7 @@ void  auto_phase_guess(Prob& problem, MatrixXd& controls, MatrixXd& states, Matr
 	    for(j=0; j<problem.phases(i).nstates;j++) { // EIGEN_UPDATE
 
     	    	problem.phases(i).guess.states.row(j) = linspace(states(j,0), states(j,states.cols()-1), min_nodes);
-    	    	
+
 	    }
 	    if (problem.phase[i-1].nparameters>0) {
 	        	problem.phases(i).guess.parameters = zeros(problem.phases(i).nparameters,1);
@@ -353,7 +353,7 @@ void  auto_phase_guess(Prob& problem, MatrixXd& controls, MatrixXd& states, Matr
 		      }
 	    }
 
-       	
+
        double dt = (time(time.cols()-1)- time(0))/problem.nphases;
 		 time_min = time(0)+(i-1)*dt;
        time_max = time(0)+i*dt;

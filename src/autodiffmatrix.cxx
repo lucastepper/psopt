@@ -43,7 +43,7 @@ AutoDiffMatrix::AutoDiffMatrix(int ninput, int minput)
    m = minput;
 
    a = new adouble[n*m];
-   if (a==NULL) error_message("Allocation error in AutoDiffMatrix::AutoDiffMatrix()");
+   if (a==NULL) error_message("Allocation error in AutoDiffMatrix::AutoDiffMatrix()", "\tmp");
 
 
 }
@@ -69,7 +69,7 @@ AutoDiffMatrix::AutoDiffMatrix()
 adouble& AutoDiffMatrix::operator() (int i, int j)
 {
   if ( i<0 || j<0 || i>n-1 || j>m-1 )  // EIGEN_UPDATE
-     error_message("\nIndex error in AutoDiffMatrix::operator()");
+     error_message("\nIndex error in AutoDiffMatrix::operator()", "\tmp");
 
   return a[((j)*n+i) ];
 }
@@ -77,7 +77,7 @@ adouble& AutoDiffMatrix::operator() (int i, int j)
 adouble& AutoDiffMatrix::elem(int i, int j)
 {
   if ( i<0 || j<0 || i>n-1 || j>m-1 )  // EIGEN_UPDATE
-     error_message("\nIndex error in AutoDiffMatrix::operator()");
+     error_message("\nIndex error in AutoDiffMatrix::operator()", "\tmp");
 
   return a[((j)*n+i) ];
 }
@@ -85,7 +85,7 @@ adouble& AutoDiffMatrix::elem(int i, int j)
 adouble& AutoDiffMatrix::operator() (int i)
 {
   if ( i<0 || i>n*m-1 )  // EIGEN_UPDATE
-     error_message("\nIndex error in AutoDiffMatrix::operator()");
+     error_message("\nIndex error in AutoDiffMatrix::operator()", "\tmp");
 
   return a[ i ];
 }
@@ -93,7 +93,7 @@ adouble& AutoDiffMatrix::operator() (int i)
 adouble AutoDiffMatrix::operator() (int i, int j) const
 {
   if ( i<0 || j<0 || i>n-1 || j>m-1 )   // EIGEN_UPDATE
-     error_message("\nIndex error in AutoDiffMatrix::operator()");
+     error_message("\nIndex error in AutoDiffMatrix::operator()", "\tmp");
 
   return a[((j)*n+i)];
 }
@@ -101,7 +101,7 @@ adouble AutoDiffMatrix::operator() (int i, int j) const
 adouble AutoDiffMatrix::elem(int i, int j) const
 {
   if ( i<0 || j<0 || i>n-1 || j>m-1 )  // EIGEN_UPDATE
-     error_message("\nIndex error in AutoDiffMatrix::operator()");
+     error_message("\nIndex error in AutoDiffMatrix::operator()", "\tmp");
 
   return a[((j)*n+i)  ];
 }
@@ -109,7 +109,7 @@ adouble AutoDiffMatrix::elem(int i, int j) const
 adouble AutoDiffMatrix::operator() (int i) const
 {
   if ( i<0 || i>n*m-1 )  // EIGEN_UPDATE
-     error_message("\nIndex error in AutoDiffMatrix::operator()");
+     error_message("\nIndex error in AutoDiffMatrix::operator()", "\tmp");
 
   return a[ i ];
 }
@@ -129,7 +129,7 @@ void inverse_ad(const AutoDiffMatrix& minput, AutoDiffMatrix* minv)
   n = minput.rows();
   m = minput.cols();
 
-  if (n!=m) { error_message("\n Matrix must be square in inverse_ad()"); }
+  if (n!=m) { error_message("\n Matrix must be square in inverse_ad()", "\tmp"); }
 
   for( i=0;i<n;i++) {
     for(k=0;k<n;k++) {
@@ -156,7 +156,7 @@ void inverse_ad(const AutoDiffMatrix& minput, AutoDiffMatrix* minv)
           if ( k!=p )
           {
 
-            if (  pivot==0.0) error_message("singular matrix in inverse_ad()");
+            if (  pivot==0.0) error_message("singular matrix in inverse_ad()", "\tmp");
 //            Temp->elem(i,k)=Temp->elem(i,k)-Temp->elem(i,p)*Temp->elem(p,k)/Temp->elem(p,p);
 
               a[k*n+i] +=  -a[p*n+i]*a[k*n+p]/pivot;
@@ -187,7 +187,7 @@ void inverse_ad(const AutoDiffMatrix& minput, AutoDiffMatrix* minv)
     }
 
 
-    if (a[p*n+p]==0.0) error_message("singular matrix");
+    if (a[p*n+p]==0.0) error_message("singular matrix", "\tmp");
 
 //    Temp->elem(p,p)=1/Temp->elem(p,p);
     a[p*n+p]=1/pivot;
@@ -221,7 +221,7 @@ void product_ad(const AutoDiffMatrix& A,const AutoDiffMatrix& B, AutoDiffMatrix*
 
   if (A.cols() != B.rows() )
 
-  { error_message("Incoherent matrix dimensions in product_ad()"); }
+  { error_message("Incoherent matrix dimensions in product_ad()", "\tmp"); }
 
   for (i=0; i< na; i++)
   {
@@ -272,7 +272,7 @@ void subtract_ad(const AutoDiffMatrix& A,const AutoDiffMatrix& B, AutoDiffMatrix
 
   if (m != B.cols() || n != B.rows())
 
-  { error_message("Incoherent matrix dimensions in subtract_ad()"); }
+  { error_message("Incoherent matrix dimensions in subtract_ad()", "\tmp"); }
 
 
 
@@ -302,7 +302,7 @@ void sum_ad(const AutoDiffMatrix& A,const AutoDiffMatrix& B, AutoDiffMatrix* ApB
 
   if (m != B.cols() || n != B.rows())
 
-  { error_message("Incoherent matrix dimensions in add_ad()"); }
+  { error_message("Incoherent matrix dimensions in add_ad()", "\tmp"); }
 
 
 

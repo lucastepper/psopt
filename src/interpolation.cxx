@@ -254,7 +254,7 @@ void linear_interpolation(MatrixXd& y, MatrixXd& x, MatrixXd& pointx, MatrixXd& 
 
 
    	pyj  = pointy.col(j);
- 
+
    	pyj1 = pointy.col(j+1);
 
 
@@ -278,18 +278,18 @@ void smooth_linear_interpolation(adouble* y, adouble& x, MatrixXd& Xdata, Matrix
   *y=0.0;
 
   if ( length(Xdata) != length(Ydata) ) {
-     error_message("The legnth of vectors Xdata and Ydata must be the same in function smooth_linear_interpolation()");
+     error_message("The legnth of vectors Xdata and Ydata must be the same in function smooth_linear_interpolation()", "\tmp");
   }
 
   if( x.value() < Xdata(0) || x.value() > Xdata(length(Xdata)-1))
   {
-      error_message("Extrapolation not allowed in function smooth_linear_interpolation()");
+      error_message("Extrapolation not allowed in function smooth_linear_interpolation()", "\tmp");
   }
 
 
   for (i=0; i<=n-2; i++) {  // EIGEN_UPDATE: i index shifted by -1
 
-    if ( Xdata(i+1)<= Xdata(i) ) error_message("Xdata vector must be strictly monotonic increasing in smooth_linear_interpolation()");
+    if ( Xdata(i+1)<= Xdata(i) ) error_message("Xdata vector must be strictly monotonic increasing in smooth_linear_interpolation()", "\tmp");
     if (i==0) {
        a  = epsilon* fabs( Xdata(i)-Xdata(i+1));
     }
@@ -327,13 +327,13 @@ void smooth_linear_interpolation(adouble* y, adouble& x, adouble* Xdata, adouble
 
   if( x.value() < Xdata[0].value() || x.value() > Xdata[n-1].value())
   {
-//      error_message("Extrapolation not allowed in function smooth_linear_interpolation()");
+//      error_message("Extrapolation not allowed in function smooth_linear_interpolation()", "\tmp");
   }
 
 
   for (i=1; i<=n-1; i++) {
 
-    if ( Xdata[i]<= Xdata[i-1] ) error_message("Xdata vector must be strictly monotonic increasing in smooth_linear_interpolation()");
+    if ( Xdata[i]<= Xdata[i-1] ) error_message("Xdata vector must be strictly monotonic increasing in smooth_linear_interpolation()", "\tmp");
     if (i==1) {
        a  = epsilon* fabs( Xdata[i-1].value()-Xdata[i].value());
     }
@@ -409,10 +409,10 @@ void spline_2d_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd& X, Ma
    long ncolsZ   = Z.cols();
 
    if ( nrowsZ != nxpoints ) {
-       error_message("Number of rows of matrix Z must be equal to the length of vector X in call to bilinear_interpolation()");
+       error_message("Number of rows of matrix Z must be equal to the length of vector X in call to bilinear_interpolation()", "\tmp");
    }
    if ( ncolsZ != nypoints )  {
-         error_message("Number of columns of matrix Z must be equal to the length of vector Y in call to bilinear_interpolation()");
+         error_message("Number of columns of matrix Z must be equal to the length of vector Y in call to bilinear_interpolation()", "\tmp");
    }
 
    AutoDiffMatrix Arow(1,nypoints);
@@ -463,10 +463,10 @@ void smooth_bilinear_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd&
    long ncolsZ   = Z.cols();
 
    if ( nrowsZ != nxpoints ) {
-       error_message("Number of rows of matrix Z must be equal to the length of vector X in call to bilinear_interpolation()");
+       error_message("Number of rows of matrix Z must be equal to the length of vector X in call to bilinear_interpolation()", "\tmp");
    }
    if ( ncolsZ != nypoints )  {
-         error_message("Number of columns of matrix Z must be equal to the length of vector Y in call to bilinear_interpolation()");
+         error_message("Number of columns of matrix Z must be equal to the length of vector Y in call to bilinear_interpolation()", "\tmp");
    }
 
    AutoDiffMatrix Arow(1,nypoints);
@@ -525,10 +525,10 @@ void bilinear_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd& X, Mat
    double z11,z12,z21,z22;
 
    if ( nrowsZ != nxpoints ) {
-       error_message("Number of rows of matrix Z must be equal to the length of vector X in call to bilinear_interpolation()");
+       error_message("Number of rows of matrix Z must be equal to the length of vector X in call to bilinear_interpolation()", "\tmp");
    }
    if ( ncolsZ != nypoints )  {
-         error_message("Number of columns of matrix Z must be equal to the length of vector Y in call to bilinear_interpolation()");
+         error_message("Number of columns of matrix Z must be equal to the length of vector Y in call to bilinear_interpolation()", "\tmp");
    }
 
    if( x.value() < X(0) )  // EIGEN_UPDATE
@@ -536,7 +536,7 @@ void bilinear_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd& X, Mat
       jx = 0;
       jxdone = true;
 
-//      error_message("Extrapolation not allowed in function bilinear_interpolation()");
+//      error_message("Extrapolation not allowed in function bilinear_interpolation()", "\tmp");
    }
 
 
@@ -545,7 +545,7 @@ void bilinear_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd& X, Mat
       jx=nxpoints-2;
       jxdone = true;
 
-//      error_message("Extrapolation not allowed in function bilinear_interpolation()");
+//      error_message("Extrapolation not allowed in function bilinear_interpolation()", "\tmp");
 
    }
 
@@ -563,7 +563,7 @@ void bilinear_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd& X, Mat
    {
       jy = 0;
       jydone = true;
-//      error_message("Extrapolation not allowed in function bilinear_interpolation()");
+//      error_message("Extrapolation not allowed in function bilinear_interpolation()", "\tmp");
    }
 
 
@@ -572,7 +572,7 @@ void bilinear_interpolation(adouble* z, adouble& x, adouble& y, MatrixXd& X, Mat
    {
       jy=nypoints-2;
       jydone = true;
-//      error_message("Extrapolation not allowed in function bilinear_interpolation()");
+//      error_message("Extrapolation not allowed in function bilinear_interpolation()", "\tmp");
    }
 
   if (!jydone) {
@@ -719,7 +719,7 @@ void spline_interpolation(adouble* y, adouble& x, adouble* xdata, adouble* ydata
       else kleft=k;
    }
    h=xdata[kright-1]-xdata[kleft-1];
-   if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()");
+   if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()", "\tmp");
    A=(xdata[kright-1]-x)/h;
    B=(x-xdata[kleft-1])/h;
    C=(pow(A,3)-A)*(h*h)/6.0;
@@ -756,7 +756,7 @@ void spline_interpolation(adouble* y, adouble& x, MatrixXd& Xdata, MatrixXd& Yda
       else kleft=k;
    }
    h=xdata[kright-1]-xdata[kleft-1];
-   if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()");
+   if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()", "\tmp");
    A=(xdata[kright-1]-x)/h;
    B=(x-xdata[kleft-1])/h;
    C=(pow(A,3)-A)*(h*h)/6.0;
@@ -803,7 +803,7 @@ void spline_interpolation(MatrixXd& Y, MatrixXd& X, MatrixXd& Xdata, MatrixXd& Y
 	  else kleft=k;
       }
       h=xdata[kright-1]-xdata[kleft-1];
-      if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()");
+      if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()", "\tmp");
       A=(xdata[kright-1]-X(i))/h;
       B=(X(i)-xdata[kleft-1])/h;
       C=(pow(A,3)-A)*(h*h)/6.0;
@@ -841,7 +841,7 @@ void spline_interpolation_with_second_derivative(adouble* y, adouble& x, adouble
       else kleft=k;
    }
    h=xdata[kright-1]-xdata[kleft-1];
-   if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()");
+   if (h == 0.0) error_message("Bad xdata input to routine spline_interpolation()", "\tmp");
    A=(xdata[kright-1]-x)/h;
    B=(x-xdata[kleft-1])/h;
    C=(pow(A,3)-A)*(h*h)/6.0;
@@ -871,7 +871,7 @@ void resample_trajectory(MatrixXd& Y,  MatrixXd& X, MatrixXd& Ydata, MatrixXd& X
     MatrixXd Yi, Yidata;
 
     if ( (X(0) < Xdata(0)) || X(length(X)-1) > Xdata(length(Xdata)-1) ) {                   // EIGEN_UPDATE
-         error_message("No extrapolation is allowed in function resample_trajectory()");
+         error_message("No extrapolation is allowed in function resample_trajectory()", "\tmp");
     }
 
     Y.resize(ny,lx);

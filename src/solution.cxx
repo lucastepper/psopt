@@ -34,14 +34,14 @@ e-mail:    v.m.becerra@ieee.org
 MatrixXd& Sol::get_states_in_phase(int iphase)
 {
   //   if (iphase <1 || iphase > workspace->problem->nphases)
-  //        error_message("incorrect phase index in Prob::phases()");
+  //        error_message("incorrect phase index in Prob::phases()", "\tmp");
      return states[iphase-1];
 }
 
 MatrixXd& Sol::get_parameters_in_phase(int iphase)
 {
   //   if (iphase <1 || iphase > workspace->problem->nphases)
-  //        error_message("incorrect phase index in Prob::phases()");
+  //        error_message("incorrect phase index in Prob::phases()", "\tmp");
      return parameters[iphase-1];
 }
 
@@ -50,7 +50,7 @@ MatrixXd& Sol::get_parameters_in_phase(int iphase)
 MatrixXd& Sol::get_controls_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases) {
-          error_message("incorrect phase index in Sol::get_controls_in_phase()");
+          error_message("incorrect phase index in Sol::get_controls_in_phase()", "\tmp");
      }
      return controls[iphase-1];
 }
@@ -58,35 +58,35 @@ MatrixXd& Sol::get_controls_in_phase(int iphase)
 MatrixXd& Sol::get_time_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases)
-          error_message("incorrect phase index in Sol::get_time_in_phase()");
+          error_message("incorrect phase index in Sol::get_time_in_phase()", "\tmp");
      return nodes[iphase-1];
 }
 
 MatrixXd& Sol::get_dual_costates_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases)
-          error_message("incorrect phase index in Sol::get_dual_costates_in_phase()");
+          error_message("incorrect phase index in Sol::get_dual_costates_in_phase()", "\tmp");
      return dual.costates[iphase-1];
 }
 
 MatrixXd& Sol::get_dual_hamiltonian_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases)
-          error_message("incorrect phase index in Sol::get_dual_hamiltonian_in_phase()");
+          error_message("incorrect phase index in Sol::get_dual_hamiltonian_in_phase()", "\tmp");
      return dual.Hamiltonian[iphase-1];
 }
 
 MatrixXd& Sol::get_dual_path_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases)
-          error_message("incorrect phase index in Sol::get_dual_path_in_phase()");
+          error_message("incorrect phase index in Sol::get_dual_path_in_phase()", "\tmp");
      return dual.path[iphase-1];
 }
 
 MatrixXd& Sol::get_dual_events_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases)
-          error_message("incorrect phase index in Sol::get_dual_events_in_phase()");
+          error_message("incorrect phase index in Sol::get_dual_events_in_phase()", "\tmp");
      return dual.events[iphase-1];
 }
 
@@ -98,7 +98,7 @@ MatrixXd& Sol::get_dual_linkages()
 MatrixXd& Sol::get_relative_local_error_in_phase(int iphase)
 {
      if (iphase <1 || iphase > problem->nphases)
-          error_message("incorrect phase index in Prob::phases()");
+          error_message("incorrect phase index in Prob::phases()", "\tmp");
      return relative_errors[iphase-1];
 }
 
@@ -108,18 +108,18 @@ void initialize_solution(Sol& solution, Prob& problem, Alg& algorithm, Workspace
    int nparam;
    int i;
 
-   solution.states      = new MatrixXd[nphases];           
-   solution.controls    = new MatrixXd[nphases];           
-   solution.nodes       = new MatrixXd[nphases];           
-   solution.integrand_cost= new MatrixXd[nphases];         
-   solution.parameters  = new MatrixXd[nphases];           
-   solution.relative_errors     = new MatrixXd[nphases];   
+   solution.states      = new MatrixXd[nphases];
+   solution.controls    = new MatrixXd[nphases];
+   solution.nodes       = new MatrixXd[nphases];
+   solution.integrand_cost= new MatrixXd[nphases];
+   solution.parameters  = new MatrixXd[nphases];
+   solution.relative_errors     = new MatrixXd[nphases];
 
-   solution.dual.costates = new MatrixXd[nphases];         
-   solution.dual.path     = new MatrixXd[nphases];         
-   solution.dual.events   = new MatrixXd[nphases];         
-   solution.dual.Hamiltonian = new MatrixXd[nphases];      
-   solution.dual.linkages    = new MatrixXd;               
+   solution.dual.costates = new MatrixXd[nphases];
+   solution.dual.path     = new MatrixXd[nphases];
+   solution.dual.events   = new MatrixXd[nphases];
+   solution.dual.Hamiltonian = new MatrixXd[nphases];
+   solution.dual.linkages    = new MatrixXd;
    solution.endpoint_cost    = new double[nphases];
    solution.integrated_cost  = new double[nphases];
    solution.problem     = &problem;

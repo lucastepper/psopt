@@ -194,7 +194,7 @@ Infinity,	  	1.282,	1.645,	1.960, 	2.326,	2.576;
       pointy = TwoTailed_T_table.col(1); // EIGEN_UPDATE: (colon(),2);
     }
     else if( A==0.90 ) {
-    pointy = TwoTailed_T_table.col(2); 
+    pointy = TwoTailed_T_table.col(2);
     }
     else if (A==0.95) {
     pointy = TwoTailed_T_table.col(3);
@@ -206,7 +206,7 @@ Infinity,	  	1.282,	1.645,	1.960, 	2.326,	2.576;
         pointy = TwoTailed_T_table.col(5);
     }
     else {
-        error_message("\n A value not supported by inverse_twotailed_t_cdf()");
+        error_message("\n A value not supported by inverse_twotailed_t_cdf()", "\tmp");
     }
 
     long npoints = pointy.rows();
@@ -245,7 +245,7 @@ void product_ad(const MatrixXd& A, const adouble* x, int nx, adouble* y)
 
   if (A.cols() != nx )
 
-  { error_message("Incompatible matrix dimensions in product_ad()"); }
+  { error_message("Incompatible matrix dimensions in product_ad()", "\tmp"); }
 
 
   for (i=0; i< na; i++)
@@ -340,7 +340,7 @@ void inverse_ad(adouble* minput, int n, adouble* minv)
           if ( k!=p )
           {
 
-            if (  pivot==0.0) error_message("singular matrix in inverse_ad()");
+            if (  pivot==0.0) error_message("singular matrix in inverse_ad()", "\tmp");
 
 
               a[k*n+i] +=  -a[p*n+i]*a[k*n+p]/pivot;
@@ -371,7 +371,7 @@ void inverse_ad(adouble* minput, int n, adouble* minv)
     }
 
 
-    if (a[p*n+p]==0.0) error_message("singular matrix");
+    if (a[p*n+p]==0.0) error_message("singular matrix", "\tmp");
 
 
     a[p*n+p]=1/pivot;
@@ -414,7 +414,7 @@ void product_ad(adouble* Apr,adouble* Bpr, int na, int ma, int nb, int mb, adoub
 
   adouble sum;
 
-  if (ma != nb ) error_message("Dimension error in product_ad()");
+  if (ma != nb ) error_message("Dimension error in product_ad()", "\tmp");
 
 
 
@@ -461,7 +461,7 @@ adouble convert_to_original_time_ad(double tbar,adouble& t0,adouble& tf)
 {
 
     adouble retval;
-    
+
     retval = (tf+t0)/2.0 + (tf-t0)*(tbar/2.0);
 
     return retval;
@@ -512,7 +512,7 @@ void mtrx_mul_trans(adouble* a,double* b,adouble* ab,int na,int ma,int nb,int mb
      example of call
 		     mtrx_mult(m1,m2,mr,2,2,2,1)
   */
-  if (ma!=mb) {error_message("matrix dimension error in mtrx_mul()"); return;}
+  if (ma!=mb) {error_message("matrix dimension error in mtrx_mul()", "\tmp"); return;}
   for (i=0; i<na; i++)
   {
     for (j=0; j<mb; j++)
@@ -614,7 +614,7 @@ void sort_vector(MatrixXd& A, RowVectorXi& sindex)
 
    if ( A.rows()!=1 && A.cols() != 1 ) {
 
-      error_message("Argument must be a column or row vector in sort_vector() ");
+      error_message("Argument must be a column or row vector in sort_vector() ", "\tmp");
 
    }
 
@@ -628,7 +628,7 @@ void sort_vector(MatrixXd& A, RowVectorXi& sindex)
    a = &A(0)-1;
 
    sindex.resize(n);
-   
+
    int* pindx = &sindex(0); pindx--;
 
    if (1) { for( i=1; i<= n; i++ )  pindx[i] = (int) i; }
@@ -657,7 +657,7 @@ void sort_vector(MatrixXd& A, RowVectorXi& sindex)
         } while (inc > 1);
 
 
-   for( i=0; i< n; i++ )  sindex(i) = sindex(i)-1; 
+   for( i=0; i< n; i++ )  sindex(i) = sindex(i)-1;
 
 }
 
@@ -669,7 +669,7 @@ void sort(MatrixXd& A)
 
    if ( A.rows()!=1 && A.cols() != 1 ) {
 
-      error_message("Argument must be a column or row vector in sort_vector() ");
+      error_message("Argument must be a column or row vector in sort_vector() ", "\tmp");
 
    }
 
@@ -683,7 +683,7 @@ void sort(MatrixXd& A)
    a = &A(0)-1;
 
    sindex.resize(A.rows(),A.cols());
-   
+
    int* pindx = &sindex(0); pindx--;
 
    if (1) { for( i=1; i<= n; i++ )  pindx[i] = (int) i; }
@@ -716,27 +716,27 @@ void sort(MatrixXd& A)
 
 void rearrange_vector(MatrixXd& m, RowVectorXi& sindex)
 {
-	
+
 	bool rowVector = false;
-	 
+
 	if ( m.rows()!=1 && m.cols() != 1 ) {
 
-      error_message("Argument must be a column or row vector in sort() ");
+      error_message("Argument must be a column or row vector in sort() ", "\tmp");
 
    }
-   
+
    if (m.rows()==1) rowVector=true;
-	
+
    MatrixXd A = stack_columns(m);
-   
+
    m=A;
-	
+
 	for (long i =0; i< sindex.size(); i++) {
-	
+
 	  m(i) = A(sindex(i));
-	  
+
 	}
-	
+
 	if (rowVector==true) m=m.transpose().eval();
 
 }
@@ -749,7 +749,7 @@ void Save(const MatrixXd& m, const char* filename)
 
   if ( (fp = fopen(filename,"w")) == NULL )
 
-  {  error_message( "Error opening file in Save()"); }
+  {  error_message( "Error opening file in Save()", "\tmp"); }
 
 
     for (i=0;i<m.rows();i++) { for (j=0;j<m.cols();j++) {
@@ -757,19 +757,19 @@ void Save(const MatrixXd& m, const char* filename)
     fprintf(fp,"%g\t", m(i,j)); } fprintf(fp,"\n"); }
 
   fclose(fp);
-  
+
 }
 
 void Print(const MatrixXd& m, const char* text)
 {
     long i,j;
-    
+
     fprintf(stderr,"\n%s\n", text);
 
     for (i=0;i<m.rows();i++) { for (j=0;j<m.cols();j++) {
 
     fprintf(stderr,"%e\t", m(i,j)); } fprintf(stderr,"\n"); }
-  
+
 }
 
 MatrixXd linspace(double X1, double X2, long N)
@@ -789,34 +789,34 @@ double sum(MatrixXd& A)
 MatrixXd reshape(MatrixXd& M1, int nrow, int ncol)
 {
     Map<MatrixXd> M2(M1.data(), nrow, ncol);
-    
+
     return M2;
 }
 
 MatrixXd zeros(long nrows, long ncols)
 {
     MatrixXd m(nrows, ncols);
-    
+
     m.setZero();
-    
+
     return m;
 }
 
 MatrixXd eye(long n)
 {
 	 MatrixXd m(n, n);
-    
+
     m.setIdentity(n,n);
-    
+
     return m;
 }
 
 MatrixXd ones(long nrows, long ncols)
 {
     MatrixXd m(nrows, ncols);
-    
+
     m.setOnes();
-    
+
     return m;
 
 }
@@ -824,9 +824,9 @@ MatrixXd ones(long nrows, long ncols)
 MatrixXd elemProduct(const MatrixXd& m1,const MatrixXd& m2)
 {
 	 MatrixXd m;
-	 
+
 	 m = m1.cwiseProduct(m2);
-	 
+
 	 return m;
 
 }
@@ -834,9 +834,9 @@ MatrixXd elemProduct(const MatrixXd& m1,const MatrixXd& m2)
 MatrixXd elemDivision(const MatrixXd& m1,const MatrixXd& m2)
 {
 	 MatrixXd m;
-	 
+
 	 m = m1.cwiseQuotient(m2);
-	 
+
 	 return m;
 }
 
@@ -850,28 +850,28 @@ MatrixXd load_data(const char* filename, long nrows, long ncols)
   long i,j;
 
   FILE *fp;
-  
+
   MatrixXd m(nrows,ncols);
-  
+
   double value;
 
   if ( (fp = fopen(filename,"r")) == NULL )
 
-  {  error_message( "Error opening file in load_data()"); }
+  {  error_message( "Error opening file in load_data()", "\tmp"); }
 
 
-  for (i=0;i<nrows;i++) { 
+  for (i=0;i<nrows;i++) {
       for (j=0;j<ncols;j++) {
 
-           fscanf(fp,"%lf", &value); 
+           fscanf(fp,"%lf", &value);
            m(i,j) = value;
-      } 
+      }
   }
-  
+
 
 
   fclose(fp);
-  
+
   return m;
 }
 
@@ -888,18 +888,18 @@ MatrixXd tra(const MatrixXd& m)
 MatrixXd stack_columns(const MatrixXd& m)
 {
      MatrixXd m1;
-     
+
      m1.resize(m.rows()*m.cols(),1);
-     
+
      long count=0;
-     
-     for (long i=0;i<m.rows();i++) { 
+
+     for (long i=0;i<m.rows();i++) {
         for (long j=0;j<m.cols();j++) {
            m1(count,0) = m(i,j);
-           count++; 
-        } 
+           count++;
+        }
      }
-     
+
      return m1;
 }
 
@@ -916,23 +916,23 @@ double Max(const MatrixXd& m)
 double Max(const MatrixXd& m, long* i)
 {
 	  long irow, icol;
-	 
+
      if ( m.rows()!=1 && m.cols() != 1 ) {
 
-          error_message("Argument must be a column or row vector in sort() ");
+          error_message("Argument must be a column or row vector in sort() ", "\tmp");
 
-     }	 
-	 
+     }
+
     double maxval = m.maxCoeff(&irow,&icol);
-    
-    
+
+
     if (irow == 0) {
        *i = icol;
     }
     else if(icol==0) {
-       *i = irow;    
+       *i = irow;
     }
-    
+
     return maxval;
 }
 
@@ -946,9 +946,9 @@ double Min(const MatrixXd& m, long* i)
 	long irow, icol;
 
 	double minval = m.minCoeff(&irow,&icol);
-    
+
     *i = icol*m.rows()+irow;
-    
+
     return minval;
 }
 
@@ -1003,13 +1003,13 @@ MatrixXd sum_columns(const MatrixXd& A)  // matrix sum function
 
 
 
-bool isEmpty(const MatrixXd& m)     {  
-	return !((bool) m.rows()&&m.cols()); 
+bool isEmpty(const MatrixXd& m)     {
+	return !((bool) m.rows()&&m.cols());
 }
 
 
-bool isSymmetric(const MatrixXd& m) {  
-	return m.isApprox(m.transpose()); 
+bool isSymmetric(const MatrixXd& m) {
+	return m.isApprox(m.transpose());
 }
 
 
@@ -1024,49 +1024,49 @@ MatrixXd GaussianRandom(long nrows, long ncols) {
    	   R(i,j)= sqrt(-2.0*log(R1(i,j))+sqrt(PSOPT_extras::GetEPS()))*cos(2*pi*R2(i,j));
    	}
    }
-   
+
    return R;
 
 }
 
 
 MatrixXd sin(const MatrixXd& m) {
-	 return m.array().sin(); 
+	 return m.array().sin();
 	 }
-MatrixXd cos(const MatrixXd& m) { 
-    return m.array().cos(); 
+MatrixXd cos(const MatrixXd& m) {
+    return m.array().cos();
     }
-MatrixXd tan(const MatrixXd& m) { 
-    return m.array().tan(); 
+MatrixXd tan(const MatrixXd& m) {
+    return m.array().tan();
     }
-MatrixXd asin(const MatrixXd& m) { 
-     return m.array().asin(); 
+MatrixXd asin(const MatrixXd& m) {
+     return m.array().asin();
      }
-MatrixXd acos(const MatrixXd& m) { 
+MatrixXd acos(const MatrixXd& m) {
      return m.array().acos();
       }
-MatrixXd atan(const MatrixXd& m) { 
-     return m.array().atan(); 
+MatrixXd atan(const MatrixXd& m) {
+     return m.array().atan();
       }
-MatrixXd sinh(const MatrixXd& m) { 
-     return m.array().sinh(); 
+MatrixXd sinh(const MatrixXd& m) {
+     return m.array().sinh();
      }
-MatrixXd cosh(const MatrixXd& m) { 
-     return m.array().cosh(); 
+MatrixXd cosh(const MatrixXd& m) {
+     return m.array().cosh();
      }
-MatrixXd tanh(const MatrixXd& m) { 
-     return m.array().tanh(); 
+MatrixXd tanh(const MatrixXd& m) {
+     return m.array().tanh();
      }
-MatrixXd exp(const MatrixXd& m) { 
-     return m.array().exp(); 
+MatrixXd exp(const MatrixXd& m) {
+     return m.array().exp();
      }
-MatrixXd log(const MatrixXd& m) { 
-     return m.array().log(); 
+MatrixXd log(const MatrixXd& m) {
+     return m.array().log();
      }
-MatrixXd log10(const MatrixXd& m) { 
-     return m.array().log10(); 
+MatrixXd log10(const MatrixXd& m) {
+     return m.array().log10();
      }
-MatrixXd sqrt(const MatrixXd& m) { 
-     return m.array().sqrt(); 
+MatrixXd sqrt(const MatrixXd& m) {
+     return m.array().sqrt();
      }
 

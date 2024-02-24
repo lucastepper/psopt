@@ -104,7 +104,7 @@ void rk4_propagate( void (*dae)(adouble* derivatives, adouble* path, adouble* st
         MatrixXd& state_trajectory, Workspace* workspace)
 {
         // 4th order Runge Kutta algorithm with given time vector and control sequence
-   
+
    int nsteps = length(time_vector) - 1;
 
 	int nstates = problem.phases(iphase).nstates;
@@ -422,7 +422,7 @@ void rkf_propagate( void (*dae)(adouble* derivatives, adouble* path, adouble* st
 		 else if (h<hmin) {
 		   flag = 0;
 		   fprintf(stderr,"\nh=%e, hmin=%e", h, hmin);
-		   error_message("\n Warning: minimum step size exceeded in rkf_propagate( )");
+		   error_message("\n Warning: minimum step size exceeded in rkf_propagate( )", workspace->problem->outdir.c_str());
 		 }
 
 	     }

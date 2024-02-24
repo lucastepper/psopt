@@ -47,7 +47,7 @@ adouble legendre_polynomial( adouble x, int n)
      case 5:
          retval= (1.0/8.0)*(63.0*pow(x,5) - 70.0*pow(x,3) + 15.0*x); break;
      default:
-         error_message("legendre_polynomial(x,n) is limited to n=0...5");
+         error_message("legendre_polynomial(x,n) is limited to n=0...5", "\tmp");
   }
 
   return retval;
@@ -75,7 +75,7 @@ adouble legendre_polynomial_derivative( adouble x, int n)
      case 5:
          retval= (1.0/8.0)*(5.0*63.0*pow(x,4) - 3.0*70.0*pow(x,2) + 15.0); break;
      default:
-         error_message("legendre_polynomial_derivative(x,n) is limited to n=0...5");
+         error_message("legendre_polynomial_derivative(x,n) is limited to n=0...5", "\tmp");
   }
 
   return retval;
@@ -716,7 +716,7 @@ int main(void)
     problem.phases(2).bounds.upper.EndTime      = 3100;
 
 
-    // BOUNDS FOR PHASE 
+    // BOUNDS FOR PHASE
     problem.phases(3).bounds.lower.states(0) = 10.e6;
     problem.phases(3).bounds.lower.states(1) = -1;
     problem.phases(3).bounds.lower.states(2) = -1;
@@ -823,7 +823,7 @@ int main(void)
 
 //    tra(x_guess).Print("x_guess(iphase=1)");
 
-    xfinal = x_guess.col(nnodes-1); 
+    xfinal = x_guess.col(nnodes-1);
 
     problem.phases(1).guess.states = x_guess;
     problem.phases(1).guess.time   = time_guess;
@@ -854,7 +854,7 @@ int main(void)
 //    tra(x_guess).Print("x_guess(iphase=2)");
 
 
-    xfinal = x_guess.col(nnodes-1); 
+    xfinal = x_guess.col(nnodes-1);
     double wtf2__ = xfinal(6);
 
     problem.phases(2).guess.states   = x_guess;
@@ -879,7 +879,7 @@ int main(void)
 
 //    tra(x_guess).Print("x_guess(iphase=3)");
 
-    xfinal = x_guess.col(nnodes-1); 
+    xfinal = x_guess.col(nnodes-1);
 
     problem.phases(3).guess.states = x_guess;
     problem.phases(3).guess.time   = time_guess;
@@ -955,10 +955,10 @@ int main(void)
 
     xp3     = solution.get_states_in_phase(3);
     tp3     = solution.get_time_in_phase(3);
-    
+
     xp3     = solution.get_states_in_phase(3);
     tp3     = solution.get_time_in_phase(3);
-    
+
     xp4     = solution.get_states_in_phase(4);
     tp4     = solution.get_time_in_phase(4);
 
@@ -991,11 +991,11 @@ int main(void)
     double R2D = 180/pi;
 
     MatrixXd x1 = x.row(0)/1.e6;
-    MatrixXd x2 = x.row(1); 
-    MatrixXd x3 = x.row(2); 
-    MatrixXd x4 = x.row(3); 
-    MatrixXd x5 = x.row(4); 
-    MatrixXd x6 = x.row(5); 
+    MatrixXd x2 = x.row(1);
+    MatrixXd x3 = x.row(2);
+    MatrixXd x4 = x.row(3);
+    MatrixXd x5 = x.row(4);
+    MatrixXd x6 = x.row(5);
 //    MatrixXd x7 = x(7,colon());
     MatrixXd theta_phase2;
     MatrixXd theta_phase4;
@@ -1003,10 +1003,10 @@ int main(void)
     MatrixXd phi_phase4;
     MatrixXd r;
 
-    theta_phase2 =  u_phase2.row(0)*R2D; 
-    phi_phase2    = u_phase2.row(1)*R2D; 
-    theta_phase4  = u_phase4.row(0)*R2D; 
-    phi_phase4    = u_phase4.row(1)*R2D; 
+    theta_phase2 =  u_phase2.row(0)*R2D;
+    phi_phase2    = u_phase2.row(1)*R2D;
+    theta_phase4  = u_phase4.row(0)*R2D;
+    phi_phase4    = u_phase4.row(1)*R2D;
 
     compute_cartesian_trajectory(x,r);
 

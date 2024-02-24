@@ -47,7 +47,7 @@ adouble legendre_polynomial( adouble x, int n)
      case 5:
          retval= (1.0/8.0)*(63.0*pow(x,5) - 70.0*pow(x,3) + 15.0*x); break;
      default:
-         error_message("legendre_polynomial(x,n) is limited to n=0...5");
+         error_message("legendre_polynomial(x,n) is limited to n=0...5", "\tmp");
   }
 
   return retval;
@@ -75,7 +75,7 @@ adouble legendre_polynomial_derivative( adouble x, int n)
      case 5:
          retval= (1.0/8.0)*(5.0*63.0*pow(x,4) - 3.0*70.0*pow(x,2) + 15.0); break;
      default:
-         error_message("legendre_polynomial_derivative(x,n) is limited to n=0...5");
+         error_message("legendre_polynomial_derivative(x,n) is limited to n=0...5", "\tmp");
   }
 
   return retval;
@@ -601,16 +601,16 @@ int main(void)
 ///////////  Plot some results if desired (requires gnuplot) ///////////////
 ////////////////////////////////////////////////////////////////////////////
 
-    MatrixXd x1 = x.row(0)/1.e6; 
-    MatrixXd x2 = x.row(1); 
-    MatrixXd x3 = x.row(2); 
-    MatrixXd x4 = x.row(3); 
-    MatrixXd x5 = x.row(4); 
-    MatrixXd x6 = x.row(5); 
-    MatrixXd x7 = x.row(6); 
-    MatrixXd u1 = u.row(0); 
-    MatrixXd u2 = u.row(1); 
-    MatrixXd u3 = u.row(2); 
+    MatrixXd x1 = x.row(0)/1.e6;
+    MatrixXd x2 = x.row(1);
+    MatrixXd x3 = x.row(2);
+    MatrixXd x4 = x.row(3);
+    MatrixXd x5 = x.row(4);
+    MatrixXd x6 = x.row(5);
+    MatrixXd x7 = x.row(6);
+    MatrixXd u1 = u.row(0);
+    MatrixXd u2 = u.row(1);
+    MatrixXd u3 = u.row(2);
 
     plot(t,x1,problem.name+": states", "time (h)", "p (1000000 ft)","p (1000000 ft)");
 

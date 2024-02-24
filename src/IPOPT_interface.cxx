@@ -127,7 +127,7 @@ bool IPOPT_PSOPT::get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
      if (jsratio > workspace->algorithm->jac_sparsity_ratio)
      {
            sprintf(workspace->text, "increase algorithm.jac_sparsity_ratio to just above %f", jsratio);
-           error_message(workspace->text);
+           error_message(workspace->text, "/tmp");
      }
 
      sprintf(workspace->text,"\nJacobian sparsity detected numerically:");
@@ -191,7 +191,7 @@ bool IPOPT_PSOPT::get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
 
         if (jsratio > workspace->algorithm->jac_sparsity_ratio) {
            sprintf(workspace->text, "increase algorithm.jac_sparsity_ratio to just above %f", jsratio);
-           error_message(workspace->text);
+           error_message(workspace->text, "\tmp");
         }
 
         sprintf(workspace->text,"\n%i nonzero elements out of %i [ratio=%f]\n", nnz, n*m, jsratio);
@@ -246,7 +246,7 @@ bool IPOPT_PSOPT::get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
        double hsratio = (double) ((double)  nnz_hess/((double) (n*n)));
        if (hsratio > workspace->algorithm->hess_sparsity_ratio) {
             sprintf(workspace->text, "increase algorithm.hess_sparsity_ratio to just above %f", hsratio);
-            error_message(workspace->text);
+            error_message(workspace->text, "\tmp");
        }
 
        sprintf(workspace->text,"\n%i nonzero elements out of %i [ratio = %f] \n", nnz_hess, n*n, hsratio );
@@ -407,7 +407,7 @@ void save_jacobian_sparsity_pattern(Index* rindex, Index* cindex, long nvars, lo
     jac_file = fopen("jacobian_pattern.dat", "w");
 
     if (jac_file == NULL) {
-         error_message("save_jacobian_sparsity_pattern(): error opening jacobian pattern file");
+         error_message("save_jacobian_sparsity_pattern(): error opening jacobian pattern file", "\tmp");
     }
 
     double one  = 1.0;
@@ -435,7 +435,7 @@ bool IPOPT_PSOPT::eval_jac_g(Index n, const Number* x, bool new_x,
 {
   MatrixXd& X = *workspace->Xip;
 
-  double *xpr = &(*workspace->xp)(0); 
+  double *xpr = &(*workspace->xp)(0);
 
   int nnzA, nnzG, i;
 
@@ -478,14 +478,14 @@ bool IPOPT_PSOPT::eval_jac_g(Index n, const Number* x, bool new_x,
 			}
 
     } // End if (autoderiv)
-    
+
   }
   else {
     // return the values of the jacobian of the constraints
     if (!useAutomaticDifferentiation(*workspace->algorithm)) {
 
           memcpy( &X(0), x, workspace->nvars*sizeof(double) );
-          
+
           // Compute by sparse finite differences only the non-constant Jacobian elements...
           EfficientlyComputeJacobianNonZeros(gg_num, X, m, values, workspace->jac_nnzG, workspace->iGrow,workspace->jGcol, workspace->igroup, workspace->grw, workspace );
 

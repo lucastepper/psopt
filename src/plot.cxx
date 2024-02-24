@@ -217,7 +217,7 @@ void multiplot(const MatrixXd& xa, const MatrixXd& ya, const string& title, cons
          if (ncols ==0) nncols = 1;
 
          if (nnrows*nncols != ny)
-             error_message("multiplot() error: number of independent variables to plot must correspond with the grid size nrows*ncols");
+             error_message("multiplot() error: number of independent variables to plot must correspond with the grid size nrows*ncols", "\tmp");
 
 
          Save(XY, "XY.dat");
@@ -1315,9 +1315,9 @@ void surf(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const stri
 
          MatrixXd X, Y;
 
-         if (x.rows()>1 && x.cols()>1) error_message("surf(): MatrixXd object x must be a vector");
+         if (x.rows()>1 && x.cols()>1) error_message("surf(): MatrixXd object x must be a vector", "\tmp");
 
-         if (y.rows()>1 && y.cols()>1) error_message("surf(): MatrixXd object y must be a vector");
+         if (y.rows()>1 && y.cols()>1) error_message("surf(): MatrixXd object y must be a vector", "\tmp");
 
 
            X = stack_columns(x);
@@ -1326,7 +1326,7 @@ void surf(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const stri
            Y = stack_columns(y);
 
          if ( z.rows()*z.cols() != length(X)*length(y) ) {
-				error_message("surf(): input MatrixXd object z has inconsistent dimensions with length(x) and length(y)");
+				error_message("surf(): input MatrixXd object z has inconsistent dimensions with length(x) and length(y)", "\tmp");
          }
 
          int nz = MIN( z.rows(), z.cols() );
@@ -1345,12 +1345,12 @@ void surf(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const stri
 
          datafile = fopen("XYZ.dat","w");
 
-         if (datafile==NULL) error_message("surf(): error creating gnuplot data file");
+         if (datafile==NULL) error_message("surf(): error creating gnuplot data file", "\tmp");
 
          for (i=0; i<length(X); i++) {
 				for(j=0;j<length(Y);j++) {
                     fprintf(datafile,"%f  %f  %f\n",X(i),Y(j), z(i,j) );
-	         } 
+	         }
 		      fprintf(datafile,"\n");
 	      }
 
@@ -1358,7 +1358,7 @@ void surf(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const stri
 
          gscript = fopen("gnuplot.scp","w");
 
-         if (gscript==NULL) error_message("surf(): error creating gnuplot script file");
+         if (gscript==NULL) error_message("surf(): error creating gnuplot script file", "\tmp");
 
          if (terminal!=NULL) fprintf(gscript,"\nset terminal %s", terminal);
 
@@ -1408,14 +1408,14 @@ void plot3(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const str
 
          MatrixXd X, Y, Z;
 
-         if (x.rows()>1 && x.cols()>1) error_message("plot3(): MatrixXd object x must be a vector");
+         if (x.rows()>1 && x.cols()>1) error_message("plot3(): MatrixXd object x must be a vector", "\tmp");
 
-         if (y.rows()>1 && y.cols()>1) error_message("plot3(): MatrixXd object y must be a vector");
+         if (y.rows()>1 && y.cols()>1) error_message("plot3(): MatrixXd object y must be a vector", "\tmp");
 
-         if (z.rows()>1 && z.cols()>1) error_message("plot3(): MatrixXd object z must be a vector");
+         if (z.rows()>1 && z.cols()>1) error_message("plot3(): MatrixXd object z must be a vector", "\tmp");
 
 
-         X = stack_columns(x); 
+         X = stack_columns(x);
 
 
          Y = stack_columns(y);
@@ -1424,7 +1424,7 @@ void plot3(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const str
          Z = stack_columns(z);
 
          if ( length(X) != length(Y) || length(x)!=length(Z) ) {
-		error_message("plot3(): inconsistent array lengths");
+		error_message("plot3(): inconsistent array lengths", "\tmp");
          }
 
          int nz = MIN( z.rows(), z.cols() );
@@ -1443,7 +1443,7 @@ void plot3(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const str
 
          datafile = fopen("XYZ.dat","w");
 
-         if (datafile==NULL) error_message("surf(): error creating gnuplot data file");
+         if (datafile==NULL) error_message("surf(): error creating gnuplot data file", "\tmp");
 
          for (i=0; i<length(X); i++) {
 
@@ -1455,7 +1455,7 @@ void plot3(const MatrixXd& xa, const MatrixXd& ya, const MatrixXd& za, const str
 
          gscript = fopen("gnuplot.scp","w");
 
-         if (gscript==NULL) error_message("surf(): error creating gnuplot script file");
+         if (gscript==NULL) error_message("surf(): error creating gnuplot script file", "\tmp");
 
          if (terminal!=NULL) fprintf(gscript,"\nset terminal %s", terminal);
 

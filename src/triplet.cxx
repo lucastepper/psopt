@@ -28,6 +28,7 @@ e-mail:    v.m.becerra@ieee.org
 
 **********************************************************************************************/
 
+#include <filesystem>
 #include "psopt.h"
 
 // Implementation of TripletSparseMatrix functions
@@ -186,7 +187,7 @@ void TripletSparseMatrix::InsertNonZero(int i, int j, double val)
     }
 
     if (!eflag) {
-    	
+
       anew =  new double[nznew];
       RowNew= new int[nznew];
       ColNew= new int[nznew];
@@ -208,7 +209,7 @@ void TripletSparseMatrix::InsertNonZero(int i, int j, double val)
     	RowIndx[nznew-1] = i;
       ColIndx[nznew-1] = j;
       a[nznew-1]       = val;
-      
+
     }
 
 }
@@ -346,7 +347,7 @@ TripletSparseMatrix elemProduct(const TripletSparseMatrix A, const TripletSparse
           TripletSparseMatrix sp( A.rows(), B.cols(), 0 );
 
           if (A.rows() != B.rows() ||  A.cols() != B.cols())
-                sp_error_message("Inconsistent matrix dimensions in TripletSparseMatrix elemProduct()");
+                sp_error_message("Inconsistent matrix dimensions in TripletSparseMatrix elemProduct()", "\tmp");
 
 
 
@@ -365,7 +366,7 @@ TripletSparseMatrix& TripletSparseMatrix::operator/= (double Arg)
 {
    int i;
 
-   if (Arg==0.0) sp_error_message("Division by zero in TripletSparseMatrix::operator/");
+   if (Arg==0.0) sp_error_message("Division by zero in TripletSparseMatrix::operator/", "\tmp");
 
    for (i=0; i<nz; i++)
    {
@@ -378,7 +379,7 @@ TripletSparseMatrix TripletSparseMatrix::operator/ (double Arg) const
 {
    TripletSparseMatrix Result;
 
-   if (Arg==0.0) sp_error_message("Division by zero in TripletSparseMatrix::operator/");
+   if (Arg==0.0) sp_error_message("Division by zero in TripletSparseMatrix::operator/", "\tmp");
 
 
 
@@ -403,12 +404,12 @@ double& TripletSparseMatrix::operator() (int i,int j)
     int ii;
 
     int eflag = 0;
-    
+
     if (i>=n || i<0 || j >=m || j<0 ) {
 
-         sp_error_message("Index out of range in operator TripletSparseMatrix::operator(int, int)");    
-    
-    } 
+         sp_error_message("Index out of range in operator TripletSparseMatrix::operator(int, int)", "\tmp");
+
+    }
 
     for (k=0; k< nz; k++)
     {
@@ -450,7 +451,7 @@ double TripletSparseMatrix::operator() (int row,int col) const
       double retval = 0.0;
 
       if ( (row>=n) || (row<0) || (col<0) || (col>=m) ) {
-          sp_error_message("Out of range index in TripletSparseMatrix::operator()");
+          sp_error_message("Out of range index in TripletSparseMatrix::operator()", "\tmp");
       }
 
       for (i=0; i< nz; i++) {
@@ -584,7 +585,7 @@ void TripletSparseMatrix::Load(const char* fname)
 
   if ( (fp = fopen(fname,"r")) == NULL )
 
-  {  sp_error_message( "Error opening file in TripletSparseMatrix::Load()"); }
+  {  sp_error_message( "Error opening file in TripletSparseMatrix::Load()", "\tmp"); }
 
 
    fscanf(fp,"%li", &nrow);
@@ -613,7 +614,7 @@ void TripletSparseMatrix::Save(const char* fname) const
 
   if ( (fp = fopen(fname,"w")) == NULL )
 
-  {  sp_error_message( "Error opening file in TripletSparseMatrix::Save()"); }
+  {  sp_error_message( "Error opening file in TripletSparseMatrix::Save()", "\tmp"); }
 
 
 //   fprintf(fp,"%li\t%li\t%li\n", n, m, nz);
@@ -702,7 +703,7 @@ void TripletSparseMatrix::Transpose()
 }
 
 
-void sp_error_message(const char *error_text)
+void sp_error_message(const char *error_text, const char *outdir)
 {
-     error_message( error_text );
+     error_message( outdir, error_text );
 }

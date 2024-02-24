@@ -75,12 +75,12 @@ int NLP_interface(
 #ifdef USE_SNOPT
   // C++ interface to SNOPT.
   // Create a new instance of snoptProbLocal
-  
+
   snoptProbLocal snprob(workspace, user_data);
 
 
 
-  // Allocate and initialize. 
+  // Allocate and initialize.
   int n     =  length(*x0);
   int neF   =  nlp_ncons+1;
 
@@ -117,16 +117,16 @@ int NLP_interface(
   int StartOption;
 
   double InfValue = 1.0e20;
-  
+
   int nInf;
   double sInf;
-  
-        
+
+
 
   memcpy(xlow, &(*xlb)(0), n*sizeof(double) );
 
   memcpy(xupp, &(*xub)(0), n*sizeof(double) );
-  
+
   for (int ix = 0; ix < n; ++ix) {
       x[ix]=0.0;
       xstate[ix]=0;
@@ -148,11 +148,11 @@ int NLP_interface(
   }
 
   memcpy(x, &(*x0)(0), n*sizeof(double) );
-  
-  
-  snprob.initialize    ("", 1);      
-  snprob.setPrintFile  ("snopt.out"); 
-  snprob.setProbName   ("psopt");  
+
+
+  snprob.initialize    ("", 1);
+  snprob.setPrintFile  ("snopt.out");
+  snprob.setProbName   ("psopt");
 
 
 
@@ -162,10 +162,10 @@ int NLP_interface(
 
 
   workspace->jac_done = 0;
-  
+
   if ( useAutomaticDifferentiation(algorithm) )
   {
-  	
+
 
      adouble* xad  = workspace->xad;
      adouble* fgad = workspace->fgad;
@@ -184,7 +184,7 @@ int NLP_interface(
      trace_off();
 
 
-    // Initial run of ADOL-C's sparse_jac() to detect full Jacobian structure 
+    // Initial run of ADOL-C's sparse_jac() to detect full Jacobian structure
     int repeat = 0;
     int options[4];
     options[0]=0; options[1]=0; options[2]=0;options[3]=0;
@@ -198,7 +198,7 @@ int NLP_interface(
 
      if (jsratio > workspace->algorithm->jac_sparsity_ratio) {
            sprintf(workspace->text, "increase algorithm.jac_sparsity_ratio to just above %f", jsratio);
-           error_message(workspace->text);
+           error_message(workspace->text, problem->outdir.c_str());
      }
 
      sprintf(workspace->text,"\n%i nonzero elements out of %li [ratio=%f]\n", workspace->F_nnz, n*neF, jsratio);
@@ -206,42 +206,42 @@ int NLP_interface(
 
      if (!use_sparse_jac_function) {
         DetectJacobianSparsityAD(fg_num, *x0, neF,  &neA,  iAfun, jAvar, A,
-                                            &neG,  iGfun, jGvar, 
+                                            &neG,  iGfun, jGvar,
                                             workspace->grw, workspace );
      }
      else {
        snprob.computeJac(neF, n, snoptProbLocal::snPSOPTusrf_,
 		  x, xlow, xupp,
 		  iAfun, jAvar, A, neA,
-		  iGfun, jGvar, neG);     	                                          
-     }                                         
+		  iGfun, jGvar, neG);
+     }
 
   }
-  
+
   else {
-   
+
 
    if (use_sparse_jac_function) {
       snprob.computeJac(neF, n, snoptProbLocal::snPSOPTusrf_,
 		  x, xlow, xupp,
 		  iAfun, jAvar, A, neA,
 		  iGfun, jGvar, neG);
-		  
+
 	}
 	else {
 
      DetectJacobianSparsity(fg_num, *x0, neF,  &neA,  iAfun, jAvar, A,
-                                            &neG,  iGfun, jGvar, 
-                                            workspace->grw, workspace ); 
-                                            
+                                            &neG,  iGfun, jGvar,
+                                            workspace->grw, workspace );
 
-   }                          
+
+   }
 
   }
 
   int * iGfuni = new int[neG];
-  int * jGvari = new int[neG];  
-  
+  int * jGvari = new int[neG];
+
   for (int iG = 0; iG < neG; iG++) {
   	  if (use_sparse_jac_function) {
         workspace->iGfun1[iG] = iGfun[iG]-1;
@@ -253,11 +253,11 @@ int NLP_interface(
         jGvari[iG] = jGvar[iG];
      }
   }
-  
+
   // Create and store matrix A as a triplet based sparse matrix.
   int * iAfuni = new int[neA];
   int * jAvari = new int[neA];
-  
+
 
   for (int iA = 0; iA < neA; iA++) {
   	 if (use_sparse_jac_function) {
@@ -271,16 +271,16 @@ int NLP_interface(
   }
 
   TripletSparseMatrix As(A, neF, n, neA, iAfuni, jAvari);
-  
+
 
 
   workspace->As = &As;
-  
+
 //  (*workspace->Gsp).resize(neF, n, neG);
 
 
   workspace->jac_done=1;
-  
+
 
   // Set optimizer options.
   int derivative_option;
@@ -290,16 +290,16 @@ int NLP_interface(
   else {
        derivative_option = 0;
   }
-    
+
   snprob.setIntParameter("Derivative option", derivative_option);
 
   snprob.setIntParameter("Verify level ", 3);
   snprob.setIntParameter("Major iterations limit",
 		  workspace->algorithm->nlp_iter_max);
   snprob.setIntParameter("Minor iterations limit",
-		  workspace->algorithm->nlp_iter_max);   
+		  workspace->algorithm->nlp_iter_max);
   snprob.setIntParameter("Iterations limit",
-		  50 * workspace->algorithm->nlp_iter_max);	  		  
+		  50 * workspace->algorithm->nlp_iter_max);
   snprob.setRealParameter("Major optimality tolerance",
 		  workspace->algorithm->nlp_tolerance);
   if (!algorithm.print_level) {
@@ -317,27 +317,27 @@ int NLP_interface(
 
   // int inform = snprob.solve(StartOption);
   int inform;
-  
+
   if (useAutomaticDifferentiation(algorithm)) {
-  
-		
+
+
 		inform = snprob.solve(StartOption, neF, n, ObjAdd, ObjRow, snoptProbLocal::snPSOPTusrf_,
 		iAfuni, jAvari, A, neA,
 		iGfuni, jGvari, neG,
 		xlow, xupp, Flow, Fupp,
 		x, xstate, xmul,
 		F, Fstate, Fmul,
-		workspace->nS, nInf, sInf);		
-		
-		
+		workspace->nS, nInf, sInf);
+
+
   }
   else {
-        
+
      inform = snprob.solve(StartOption, neF, n, ObjAdd, ObjRow, snoptProbLocal::snPSOPTusrf_,
               xlow, xupp, Flow, Fupp,
               x, xstate, xmul, F, Fstate, Fmul,
               workspace->nS, nInf, sInf);
-              
+
   }
 
   solution->nlp_return_code = int (inform/10);
@@ -359,7 +359,7 @@ int NLP_interface(
 
   delete [] iGfun;
   delete [] jGvar;
-  
+
   delete [] x;
   delete [] xlow;
   delete [] xupp;
@@ -376,7 +376,7 @@ int NLP_interface(
 
 #else
         sprintf(workspace->text,"\nSNOPT method has been specified but not linked");
-        error_message(workspace->text);
+        error_message(workspace->text, problem->outdir.c_str());
 #endif
 
     }
@@ -394,7 +394,7 @@ int NLP_interface(
   // Change some options
   app->Options()->SetNumericValue("tol", workspace->algorithm->nlp_tolerance );
   app->Options()->SetStringValue("mu_strategy", "adaptive");
-  app->Options()->SetStringValue("output_file", "ipopt.out");
+  app->Options()->SetStringValue("output_file", ( problem->outdir / "ipopt.out" ).c_str());
   app->Options()->SetStringValue("nlp_scaling_method","gradient-based");
   app->Options()->SetStringValue("linear_solver",workspace->algorithm->ipopt_linear_solver);
   app->Options()->SetNumericValue("max_cpu_time", workspace->algorithm->ipopt_max_cpu_time );
@@ -453,7 +453,7 @@ int NLP_interface(
 
     else {
         sprintf(workspace->text,"\n Incorrect NLP method has been specified");
-        error_message(workspace->text);
+        error_message(workspace->text, problem->outdir.c_str());
     }
 
     return 0;
