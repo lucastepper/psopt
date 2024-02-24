@@ -130,7 +130,7 @@ void initialize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Wor
     workspace->hess_jc   = NULL;
     workspace->lambda_d  = NULL;
   }
-  
+
   if ( algorithm.nlp_method == "SNOPT") {
   	workspace->iGfun     = new unsigned int[(int) (algorithm.jac_sparsity_ratio*max_nvars*(max_ncons+1))];
   	workspace->jGvar     = new unsigned int[(int) (algorithm.jac_sparsity_ratio*max_nvars*(max_ncons+1))];
@@ -262,13 +262,13 @@ void initialize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Wor
 
   string fname = "psopt_solution_" + problem.outfilename.substr(0,dotindex) + ".txt";
 
-  workspace->psopt_solution_summary_file = fopen(fname.c_str(),"w");
+  workspace->psopt_solution_summary_file = fopen( (problem.outdir / fname).c_str(),"w");
 
-  workspace->mesh_statistics = fopen("mesh_statistics.txt","w");
+  workspace->mesh_statistics = fopen( ( problem.outdir  / "mesh_statistics.txt").c_str(),"w");
 
   fname = "mesh_statistics_" + problem.outfilename.substr(0,dotindex) + ".tex";
 
-  workspace->mesh_statistics_tex = fopen( fname.c_str(),"w");
+  workspace->mesh_statistics_tex = fopen( ( problem.outdir / fname).c_str(),"w");
 
   if (workspace->psopt_solution_summary_file == NULL) error_message("Error opening \"psopt_solution_summary.txt\" file");
 
@@ -293,7 +293,7 @@ void initialize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Wor
   workspace->tag_gc       = 5;
 
   workspace->user_data = problem.user_data;
-  
+
   workspace->nS           = 0;
 
 }
@@ -322,11 +322,11 @@ void resize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Workspa
     workspace->JacCol1->resize(nlp_ncons+1,1);
     workspace->JacCol2->resize(nlp_ncons+1,1);
     workspace->JacCol3->resize(nlp_ncons+1,1);
-  } 
+  }
   else {
     workspace->JacCol1->resize(nlp_ncons,1);
     workspace->JacCol2->resize(nlp_ncons,1);
-    workspace->JacCol3->resize(nlp_ncons,1);  
+    workspace->JacCol3->resize(nlp_ncons,1);
   }
   workspace->xp->resize(nvars,1);
   workspace->constraint_scaling->resize(nlp_ncons,1);
@@ -339,7 +339,7 @@ void resize_workspace_vars(Prob& problem, Alg& algorithm, Sol& solution, Workspa
 
   workspace->xlb->resize(nvars,1);
   workspace->xub->resize(nvars,1);
-  
+
   workspace->nphases = problem.nphases;
 
   for(i=0; i< problem.nphases; i++)

@@ -27,6 +27,7 @@ e-mail:    v.m.becerra@ieee.org
 #include <Eigen/Dense>
 
 #include <limits>
+#include <filesystem>
 using std::numeric_limits;
 
 namespace PSOPT {
@@ -382,6 +383,8 @@ public:
 
    string  outfilename;
 
+   std::filesystem::path outdir;
+
    void* user_data;
 
    Phases&   phases(int iphase);
@@ -488,10 +491,10 @@ typedef struct {
 class MSdata {
 public:
   MSdata() {
-    nodes.resize(1);  
+    nodes.resize(1);
   }
   MSdata(long n) {
-    nodes.resize(n);  
+    nodes.resize(n);
   }
   int nsegments;
   int nstates;
@@ -668,9 +671,9 @@ public:
   int tag_fg 	;
   int tag_gc    ;
   void *user_data;
-  
+
 // A persistent variable for warm starts in SNOPT7
-  int nS;  
+  int nS;
 
 };
 
@@ -816,7 +819,7 @@ void DetectJacobianSparsity(void fun(MatrixXd& x, MatrixXd* f, Workspace* ), Mat
                            int* nnzA, int* iArow, int* jAcol, double* Aij,
                            int* nnzG, int* jGrow, int* jGcol,
                            GRWORK* grw, Workspace* workspace);
-                           
+
 void DetectJacobianSparsityAD(void fun(MatrixXd& x, MatrixXd* f, Workspace* ), MatrixXd& x, int nf,
                            int* nnzA, int* iArow, int* jAcol, double* Aij,
                            int* nnzG, int* jGrow, int* jGcol,
@@ -1148,7 +1151,7 @@ public:
       \param  plevel desired print level
       \return void
   */
-  
+
    static void     tic(void);
 
    static double   toc(void);
@@ -1162,7 +1165,7 @@ public:
    static void SetPrintLevel( int plevel );
 
    static int PrintLevel();
-   
+
    static void   RiseErrorFlag()   { errorFlag = true; }
 
 
@@ -1225,8 +1228,8 @@ double sum(MatrixXd& A);
 bool any(const MatrixXd& m);
 
 
-bool isEmpty(const MatrixXd& m);     
-bool isSymmetric(const MatrixXd& m); 
+bool isEmpty(const MatrixXd& m);
+bool isSymmetric(const MatrixXd& m);
 
 
 
@@ -1405,7 +1408,7 @@ public:
       \return void
   */
    void Transpose();
-  
+
    //!  This function computes and returns the element-wise product of two sparse matrices of the same dimensions. If the dimensions of the two input matrices are not the same, an error is thrown.
   /**
       \param  A is a TripletSparseMatrix object.
@@ -1413,7 +1416,7 @@ public:
       \return a temporary TripletSparseMatrix object with the result of the operation
   */
    friend TripletSparseMatrix elemProduct(const TripletSparseMatrix A, const TripletSparseMatrix& B);
-  
+
   //! Creates a sparse identity matrix of specified dimension.
   /**
       \param  n: number of rows and columns of the sparse matrix to be created.
@@ -1421,7 +1424,7 @@ public:
   */
    friend TripletSparseMatrix speye(int n);
 
-  
+
    friend double enorm(const TripletSparseMatrix& A);
 
 
@@ -1431,7 +1434,7 @@ public:
       \return a reference to a temporary TripletSparseMatrix object with the result of the operation.
   */
    friend TripletSparseMatrix Abs(const TripletSparseMatrix& A);
- 
+
 
    //! This function eliminates zero elements from a sparse matrix and deletes unnecessary storage.
   /**
@@ -1452,7 +1455,7 @@ public:
       \return Reference to the calling TripletSparseMatrix object
   */
    TripletSparseMatrix& operator -= (const TripletSparseMatrix &rval);
-  
+
   //! Computes the product of a sparse matrix (left hand side of the operator) times a real scalar (right hand side value) and replaces the left hand side object with the result of the operation.
   /**
       \param Arg: double value that will multiply each non-zero element of the sparse matrix.
@@ -1477,7 +1480,7 @@ public:
       \return Reference to a temporary TripletSparseMatrix object with the result of the operation
   */
    TripletSparseMatrix operator - (const TripletSparseMatrix& rval) const;
-  
+
   //! Computes the product of a sparse matrix (left hand side of the operator) times a real scalar (right hand side value).
   /**
       \param Arg: double value that will multiply each non-zero element of the sparse matrix.
@@ -1487,8 +1490,8 @@ public:
 //! Computes the product of a triplet sparse matrix (left hand side of the operator) by a MatrixXd object (right hand side of the operator).
   /**
       \param A:  MatrixXd object to be multiplied
-      \return Reference to a temporary object with the result of the operation.   
-  */    
+      \return Reference to a temporary object with the result of the operation.
+  */
    TripletSparseMatrix operator* (const MatrixXd& A) const;
   //! Computes the product of a real value (left hand side of the operator) by a sparse matrix (right hand side of the operator).
   /**

@@ -240,7 +240,7 @@ void print_psopt_summary(Prob& problem, Alg& algorithm, Sol& solution, Workspace
        filename = "psopt.txt";
     else
        filename = problem.outfilename;
-    outfile = fopen( filename.c_str(), "w");
+    outfile = fopen( (problem.outdir / filename).c_str(), "w");
     fprintf(outfile,"\nPSOPT results summary");
     fprintf(outfile,"\n=====================\n");
 
@@ -564,15 +564,15 @@ void print_solution_summary(Prob& problem, Alg& algorithm, Sol& solution, Worksp
         }
       }
 
-     FullPivLU<MatrixXd> lu_decomp(Cp);  
-        
+     FullPivLU<MatrixXd> lu_decomp(Cp);
+
      fprintf(outfile,"\n\n>>>>> Rank of parameter covariance matrix: %li ", lu_decomp.rank() );
 
      fprintf(outfile,"\n\n>>> 95 percent statistical confidence limits on estimated parameters ");
      fprintf(outfile,"\nPhase\tParameter\t(Low Confidence Limit) \t(Value) \t\t(High Confidence Limit)");
 
       pcount = 0;
-      
+
       for (int iphase=1; iphase<=problem.nphases; iphase++)
       {
 
@@ -847,7 +847,7 @@ void print_constraint_summary(Prob& problem, Sol& solution, Workspace* workspace
 
 
     }
-    
+
     delete [] g_l;
     delete [] g_u;
 
